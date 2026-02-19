@@ -11,5 +11,50 @@
             <judet>Neamt</judet>
             <tara>România</tara>
         </adresa>
+        <educatie>
+            <nivel>Facultate</nivel>
+            <domeniu>Automatica</domeniu>
+            <institutie>Universitatea Tehnica Iasi</institutie>
+            <an>2020</an>
+            <ocupatie>Inginer</ocupatie>
+        </educatie>
+    </persoana>
+        <persoana id="2">
+        <nume>Tanase</nume>
+        <prenume>Cristi</prenume>
+        <varsta>34</varsta>
+        <adresa>
+            <strada>Strada Lalelelor</strada>
+            <numar>23</numar>
+            <localitate>Bucuresti</localitate>
+            <judet>Bucuresti</judet>
+            <tara>România</tara>
+        </adresa>
+        <educatie>
+            <nivel>Liceu</nivel>
+            <domeniu>Sportiv</domeniu>
+            <institutie>FCSB</institutie>
+            <an>2012</an>
+            <ocupatie>Jucator</ocupatie>
+        </educatie>
+    </persoana>
+        <persoana id="3">
+        <nume>Ionescu</nume>
+        <prenume>Mihai</prenume>
+        <varsta>57</varsta>
+        <adresa>
+            <strada>Strada Sclaviei</strada>
+            <numar>66</numar>
+            <localitate>Damuc</localitate>
+            <judet>Neamt</judet>
+            <tara>România</tara>
+        </adresa>
+        <educatie>
+            <nivel>Facultate</nivel>
+            <domeniu>Economie</domeniu>
+            <institutie>FEEA</institutie>
+            <an>1990</an>
+            <ocupatie>Contabil</ocupatie>
+        </educatie>
     </persoana>
 </persoane>
