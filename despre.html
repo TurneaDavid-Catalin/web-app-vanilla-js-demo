@@ -1,107 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="ro">
 
 <head>
     <title> Programare Web - Proiect 1 </title>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 
-<style>
-    table,
-    th,
-    td {
-        border: 1px solid black;
-    }
-</style>
+<body>
+    <center>
+        <img src="imagini\logo.jpeg" alt="The four kings" width="350" height="350">
 
-<center>
-    <h1> "Cei 4 regi" ai boxului </h1>
+        <nav>
+            <a href="index.html">Acasă</a>
+            <a href="video.html">Video</a>
+            <a href="inregistreaza.html">Înregistrează</a>
+            <a href="despre.html">Despre</a>
+        </nav>
+        <h1> "Cei 4 regi" ai boxului </h1>
 
-    <h2> Descriere </h2>
+        <h2> Descriere </h2>
 
-    <p> <b>"The four kings"</b>
-        au fost o constelație de talente excepționale
-        — <i>Sugar Ray Leonard, Roberto Durán, Thomas Hearns și Marvin Hagler </i>—
-        care au definit boxul anilor '80 printr-o serie de rivalități legendare,
-        salvând popularitatea sportului după era lui Muhammad Ali.
-    </p>
+        <p> <b>"The four kings"</b>
+            au fost o constelație de talente excepționale
+            — <i>Sugar Ray Leonard, Roberto Durán, Thomas Hearns și Marvin Hagler </i>—
+            care au definit boxul anilor '80 printr-o serie de rivalități legendare,
+            salvând popularitatea sportului după era lui Muhammad Ali.
+        </p>
 
-    <img src="imagini\logo.jpeg" width="350" height="350">
+        <p> <b> Cele mai importante meciuri: </b> </p>
 
-    <p> <b> Cele mai importante meciuri: </b> </p>
+        <table>
+            <tr>
+                <th>Data</th>
+                <th>Câștigător</th>
+                <th>Învins</th>
+                <th>Metoda</th>
+                <th>Evenimentul</th>
+            </tr>
+            <tr>
+                <th>20 Iunie 1980</th>
+                <th>Roberto Durán</th>
+                <th>Sugar Ray Leonard</th>
+                <th>Decizie</th>
+                <th>The Brawl in Montreal</th>
+            </tr>
+            <tr>
+                <th>25 Noiembrie 1980</th>
+                <th>Sugar Ray Leonard</th>
+                <th>Roberto Durán</th>
+                <th>TKO (Runda 8)</th>
+                <th>"No Mas" Fight</th>
+            </tr>
+            <tr>
+                <th>16 Septembrie 1981</th>
+                <th>Sugar Ray Leonard</th>
+                <th>Thomas Hearns</th>
+                <th>TKO (Runda 14)</th>
+                <th>The Showdown</th>
+            </tr>
+            <tr>
+                <th>15 Aprilie 1985</th>
+                <th>Marvin Hagler</th>
+                <th>Thomas Hearns</th>
+                <th>KO (Runda 3)</th>
+                <th>The War</th>
+            </tr>
+        </table>
 
-    <table>
-        <tr>
-            <th>Data</th>
-            <th>Câștigător</th>
-            <th>Învins</th>
-            <th>Metoda</th>
-            <th>Evenimentul</th>
-        </tr>
-        <tr>
-            <th>20 Iunie 1980</th>
-            <th>Roberto Durán</th>
-            <th>Sugar Ray Leonard</th>
-            <th>Decizie</th>
-            <th>The Brawl in Montreal</th>
-        </tr>
-        <tr>
-            <th>25 Noiembrie 1980</th>
-            <th>Sugar Ray Leonard</th>
-            <th>Roberto Durán</th>
-            <th>TKO (Runda 8)</th>
-            <th>"No Mas" Fight</th>
-        </tr>
-        <tr>
-            <th>16 Septembrie 1981</th>
-            <th>Sugar Ray Leonard</th>
-            <th>Thomas Hearns</th>
-            <th>TKO (Runda 14)</th>
-            <th>The Showdown</th>
-        </tr>
-        <tr>
-            <th>15 Aprilie 1985</th>
-            <th>Marvin Hagler</th>
-            <th>Thomas Hearns</th>
-            <th>KO (Runda 3)</th>
-            <th>The War</th>
-        </tr>
-    </table>
+        <p> Caută luptători: </p>
 
-    <p> Cauta luptatori: </p>
+        <form>
+            <label for="lname">Nume:</label><br>
+            <input type="text" id="lname" name="lname"><br>
 
-    <form>
-        <label for="lname">Nume:</label><br>
-        <input type="text" id="lname" name="lname"><br>
+            <label for="fname">Prenume:</label><br>
+            <input type="text" id="fname" name="fname"><br>
 
-        <label for="fname">Prenume:</label><br>
-        <input type="text" id="fname" name="fname"><br>
+            <label for="date">Data:</label> <br>
+            <select name="date" id="date">
+                <option value="20 Iunie 1980">20 Iunie 1980</option>
+                <option value="25 Noiembrie 1980">25 Noiembrie 1980</option>
+                <option value="16 Septembrie 1981">16 Septembrie 1981</option>
+                <option value="15 Aprilie 1985">15 Aprilie 1985</option>
+            </select><br>
 
-        <label for="date">Data:</label> <br>
-        <select name="date" id="date">
-            <option value="20 Iunie 1980">20 Iunie 1980</option>
-            <option value="25 Noiembrie 1980">25 Noiembrie 1980</option>
-            <option value="16 Septembrie 1981">16 Septembrie 1981</option>
-            <option value="15 Aprilie 1985">15 Aprilie 1985</option>
-        </select><br>
+            <label for="pwd">Parolă:</label><br>
+            <input type="password" id="pwd" name="pwd"><br>
 
-        <label for="pwd">Parolă:</label><br>
-        <input type="password" id="pwd" name="pwd"><br>
+            <label for="extra">Extra:</label><br>
+            <textarea name="extra" id="extra" rows="10" cols="30"></textarea><br>
 
-        <label for="extra">Extra:</label><br>
-        <textarea name="extra" rows="10" cols="30"></textarea><br>
+            <label for="fname"> Sunt de acord cu termenii și condițiile</label>
+            <input type="checkbox" name=""><br>
 
-        <label for="fname"> Sunt de acord cu termenii si condițiile</label>
-        <input type="checkbox" name=""><br>
+            <input type="submit" value="Submit">
 
-        <input type="submit" value="Submit">
+            <p>Bibliografie: <a href="https://www.w3schools.com/html/" target="_blank">W3Schools!</a></p>
 
-        <p>Bibliografie: <a href="https://www.w3schools.com/html/" target="_blank">W3Schools!</a></p>
+            <p>Sursa principală de informații: </p>
 
-        <p>Sursa principala de informatii: </p>
+            <iframe src="https://en.wikipedia.org/wiki/Boxing_in_the_1980s" height="400" width="800"></iframe>
+        </form>
 
-        <iframe src="https://en.wikipedia.org/wiki/Boxing_in_the_1980s" height="400" width="800"></iframe>
-    </form>
-
-</center>
+    </center>
+</body>
 
 </html>
