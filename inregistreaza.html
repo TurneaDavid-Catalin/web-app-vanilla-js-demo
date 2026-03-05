@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<head>
+    <title> Proiect 1 - Înregistrează </title>
+</head>
+
+<body>
+    <center>
+        <img src="imagini\logo.jpeg" width="350" height="350">
+        <nav>
+            <a href="index.html">Acasă</a>
+            <a href="video.html">Video</a>
+            <a href="inregistreaza.html">Înregistreaza</a>
+            <a href="despre.html">Despre</a>
+        </nav>
+        <fieldset>
+            <legend>Informații generale: </legend>
+
+            <label for="uname">Nume utilizator:</label>
+            <input type="text" id="uname" name="uname"> <br>
+
+            <label for="lname">Nume:</label>
+            <input type="text" id="lname" name="lname"> <br>
+
+            <label for="fname">Prenume:</label>
+            <input type="text" id="fname" name="fname"> <br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email"> <br>
+
+            <label for="tel">Numar de telefon:</label>
+            <input type="tel" id="tel" name="tel"> <br>
+        </fieldset>
+
+        <fieldset>
+            <legend>Informații personale: </legend>
+            <label for="sex">Sex: </label>
+            <select name="sex" id="sex">
+                <option value="masculin">Masculin</option>
+                <option value="feminin">Feminin</option>
+            </select> <br>
+
+            <label for="food">Alegeți mâncarea preferată: </label>
+            <input list="foods" name="food" id="food">
+            <datalist id="foods">
+                <option value="clătite">
+                <option value="copănele">
+                <option value="bătaie">
+            </datalist> <br>
+
+            <label for="color">Alegeți culoarea preferată: </label>
+            <input type="color" name="color" id="color"> <br>
+
+            <label for="date">Alegeți data nașterii: </label>
+            <input type="date" name="date" id="date"> <br>
+
+            <label for="age">Alegeți vârsta: </label>
+            <input type="range" name="age" id="age" min="18" max="100"> <br>
+
+            <label for="personalPage">Pagina personală: </label>
+            <input type="url" name="personalPage" id="personalPage"> <br>
+
+            <label for="desc">Descriere:</label><br>
+            <textarea name="desc" rows="10" cols="30"></textarea><br>
+        </fieldset>
+        <button type="button" disabled>Înregistrează</button>
+    </center>
+</body>
