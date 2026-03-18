@@ -104,6 +104,31 @@
     padding: 0;
 }
 
+.videoGalleryContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.videoItem {
+    display:flex;
+    flex-direction: column;
+    align-self: center;
+}
+
+.videoItem.big iframe{
+    width: 800px;
+    height: 450px;
+}
+
+.videoItem.medium iframe{
+    width: 560px;
+    height: 315px;
+}
+
+.videoItem.small {
+    width: 400px;
+    height: 300px;
+}
 
 body {
     /*am pus astea ca bara de navigare sa ocupe tot spatiu*/
@@ -137,4 +162,20 @@ legend {
 
 fieldset {
     background-color: red;
+}
+
+@media screen and (max-width: 768px) {
+    .navItem {
+        font-size: 100%;
+    }
+
+    .navItem:hover {
+        font-size: 125%;
+    }
+}
+
+@media print {
+    nav, .navContainer, .logo {
+        display: none;
+    }
 }
