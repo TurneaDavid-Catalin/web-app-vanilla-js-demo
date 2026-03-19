@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <title> Programare Web - Proiect 1 </title>
+    <link type="text/css" rel="stylesheet" href="css/stil.css">
+    <script type="text/javascript" src="js/script.js"></script>
+</head>
+
+<body onload="invata()">
+    <nav class="navContainer">
+        <img src="imagini/The-Four-Kings.png" alt="The four kings logo" class="navLogo">
+
+        <div class="navLinks">
+            <a class="navItem" href="index.html">Acasă</a>
+            <a class="navItem" href="video.html">Video</a>
+            <a class="navItem" href="inregistreaza.html" style="padding-top: 2px;">Înregistrează</a>
+            <a class="navItem" href="despre.html">Despre</a>
+            <a class="navItem" href="desen.html">Desen</a>
+            <a class="navItem" href="invat.html">Învăț</a>
+        </div>
+    </nav>
+
+    <div class="logo"></div>
+
+    <center>
+        <section>
+            <h2>Data și timpul curent</h2>
+            <p id="dateAndTime"></p>
+
+            <h2 onclick="getURL()">Url</h2>
+            <p id="currentURL"></p>
+
+            <h2 onclick="getCurrentLocation()">Locația curentă</h2>
+            <p id="currentLocation"></p>
+
+            <h2 onclick="getBrowserNameAndVersion()">Numele și versiunea browserului</h2>
+            <p id="browserNV"></p>
+
+            <h2>Sistem de operare</h2>
+            <p id="OS"></p>
+        </section>
+    </center>
+</body>
