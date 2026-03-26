@@ -4,10 +4,10 @@
 <head>
     <title> Programare Web - Proiect 1 </title>
     <link type="text/css" rel="stylesheet" href="css/stil.css">
-    <script type="text/javascript" src="js/script.js"></script>
+    <script src="js/script.js"></script>
 </head>
 
-<body onload="invata()">
+<body onload="sectiunea1()">
     <nav class="navContainer">
         <img src="imagini/The-Four-Kings.png" alt="The four kings logo" class="navLogo">
 
@@ -40,5 +40,22 @@
             <h2>Sistem de operare</h2>
             <p id="OS"></p>
         </section>
+        <section>
+            <h2>Desenează!</h2>
+
+            <label for="contColour">Alege culoarea conturului:</label>
+            <input type="color" id="contColour" name="contColour" value="#ff0000">
+            <br><br>
+
+            <label for="fillColour">Alege culoarea de umplere:</label>
+            <input type="color" id="fillColour" name="fillColour" value="#ff0000">
+            <br><br>
+
+            <canvas id="myCanvas" width="600" height="600" onclick="drawRect(event)"></canvas>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Turnea David-Cătălin - Programare Web</p>
+        </footer>
     </center>
 </body>

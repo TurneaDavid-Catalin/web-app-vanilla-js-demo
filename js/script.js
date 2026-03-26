@@ -43,10 +43,60 @@ function getOS() {
     document.getElementById("OS").innerHTML = navigator.platform;
 }
 
-function invata() {
+function sectiunea1() {
     displayCurrentTime();
     getURL();
     getCurrentLocation();
     getBrowserNameAndVersion();
     getOS();
+}
+
+let clickCount = 0;
+let startX = 0;
+let startY = 0;
+
+function getContourColour() {
+    return document.getElementById("contColour").value;
+}
+
+function getFillColour() {
+    return document.getElementById("fillColour").value;
+}
+
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+function drawRect(evt) {
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext("2d");
+    const pos = getMousePos(canvas, evt);
+
+    if (clickCount === 0) {
+        startX = pos.x;
+        startY = pos.y;
+        clickCount = 1; 
+    } 
+    else {
+        const endX = pos.x;
+        const endY = pos.y;
+        
+        const width = endX - startX;
+        const height = endY - startY;
+
+        ctx.strokeStyle = getContourColour();
+        ctx.fillStyle = getFillColour();
+        ctx.lineWidth = 3; 
+
+        ctx.beginPath();
+        ctx.rect(startX, startY, width, height);
+        ctx.fill();
+        ctx.stroke();
+
+        clickCount = 0;
+    }
 }
