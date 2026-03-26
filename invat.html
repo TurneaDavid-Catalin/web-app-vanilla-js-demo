@@ -54,6 +54,60 @@
             <canvas id="myCanvas" width="600" height="600" onclick="drawRect(event)"></canvas>
         </section>
 
+        <section>
+            <h2>Statistici "The Four Kings"</h2>
+            <p>Alege o poziție (index, pornind de la 0) și o culoare pentru a insera linii/coloane delimitatoare.</p>
+            
+            <table id="boxingTable">
+                <thead>
+                    <tr>
+                        <th>Pugilist</th>
+                        <th>Victorii</th>
+                        <th>Înfrângeri</th>
+                        <th>Remize</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sugar Ray Leonard</td>
+                        <td>36</td>
+                        <td>3</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Roberto Durán</td>
+                        <td>103</td>
+                        <td>16</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Thomas Hearns</td>
+                        <td>61</td>
+                        <td>5</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Marvin Hagler</td>
+                        <td>62</td>
+                        <td>3</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+
+            <label for="insertPos">Poziție inserare:</label>
+            <input type="number" id="insertPos" value="1" min="0">
+            <br><br>
+
+            <label for="insertColor">Culoare delimitator:</label>
+            <input type="color" id="insertColor" value="#000000">
+            <br><br>
+
+            <input type="button" value="Inserează Linie" onclick="insertRow()">
+            <input type="button" value="Inserează Coloană" onclick="insertCol()">
+        </section>
+
         <footer>
             <p>&copy; 2026 Turnea David-Cătălin - Programare Web</p>
         </footer>
