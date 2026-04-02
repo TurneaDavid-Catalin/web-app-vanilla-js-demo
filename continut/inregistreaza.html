@@ -1,84 +1,53 @@
-<!DOCTYPE html>
-<html lang="ro">
+<center>
+    <fieldset>
+        <legend>Informații generale: </legend>
 
-<head>
-    <title> Proiect 1 - Înregistrează </title>
-    <link type="text/css" rel="stylesheet" href = "css/stil.css">
-</head>
+        <label for="uname">Nume utilizator:</label>
+        <input type="text" id="uname" name="uname"> <br>
 
-<body>
-    <center>
-        <nav class="navContainer">
-            <img src="imagini/The-Four-Kings.png" alt="The four kings logo" class="navLogo">
+        <label for="lname">Nume:</label>
+        <input type="text" id="lname" name="lname"> <br>
 
-            <div class="navLinks">
-                <a class="navItem" href="index.html">Acasă</a>
-                <a class="navItem" href="video.html">Video</a>
-                <a class="navItem" href="inregistreaza.html" style="padding-top: 2px;">Înregistrează</a>
-                <a class="navItem" href="despre.html">Despre</a>
-                <a class="navItem" href="desen.html">Desen</a>
-                <a class="navItem" href="invat.html">Învăț</a>
-            </div>
-        </nav>
+        <label for="fname">Prenume:</label>
+        <input type="text" id="fname" name="fname"> <br>
 
-        <div class="logo"></div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"> <br>
 
-        <fieldset>
-            <legend>Informații generale: </legend>
+        <label for="tel">Număr de telefon:</label>
+        <input type="tel" id="tel" name="tel"> <br>
+    </fieldset>
 
-            <label for="uname">Nume utilizator:</label>
-            <input type="text" id="uname" name="uname"> <br>
+    <fieldset>
+        <legend>Informații personale: </legend>
+        <label for="sex">Sex: </label>
+        <select name="sex" id="sex">
+            <option value="masculin">Masculin</option>
+            <option value="feminin">Feminin</option>
+        </select> <br>
 
-            <label for="lname">Nume:</label>
-            <input type="text" id="lname" name="lname"> <br>
+        <label for="food">Alegeți mâncarea preferată: </label>
+        <input list="foods" name="food" id="food">
+        <datalist id="foods">
+            <option value="clătite">
+            <option value="copănele">
+            <option value="bătaie">
+        </datalist> <br>
 
-            <label for="fname">Prenume:</label>
-            <input type="text" id="fname" name="fname"> <br>
+        <label for="color">Alegeți culoarea preferată: </label>
+        <input type="color" name="color" id="color"> <br>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email"> <br>
+        <label for="date">Alegeți data nașterii: </label>
+        <input type="date" name="date" id="date"> <br>
 
-            <label for="tel">Număr de telefon:</label>
-            <input type="tel" id="tel" name="tel"> <br>
-        </fieldset>
+        <label for="age">Alegeți vârsta: </label>
+        <input type="range" name="age" id="age" min="18" max="100"> <br>
 
-        <fieldset>
-            <legend>Informații personale: </legend>
-            <label for="sex">Sex: </label>
-            <select name="sex" id="sex">
-                <option value="masculin">Masculin</option>
-                <option value="feminin">Feminin</option>
-            </select> <br>
+        <label for="personalPage">Pagina personală: </label>
+        <input type="url" name="personalPage" id="personalPage"> <br>
 
-            <label for="food">Alegeți mâncarea preferată: </label>
-            <input list="foods" name="food" id="food">
-            <datalist id="foods">
-                <option value="clătite">
-                <option value="copănele">
-                <option value="bătaie">
-            </datalist> <br>
-
-            <label for="color">Alegeți culoarea preferată: </label>
-            <input type="color" name="color" id="color"> <br>
-
-            <label for="date">Alegeți data nașterii: </label>
-            <input type="date" name="date" id="date"> <br>
-
-            <label for="age">Alegeți vârsta: </label>
-            <input type="range" name="age" id="age" min="18" max="100"> <br>
-
-            <label for="personalPage">Pagina personală: </label>
-            <input type="url" name="personalPage" id="personalPage"> <br>
-
-            <label for="desc">Descriere:</label><br>
-            <textarea name="desc" id="desc" rows="10" cols="30"></textarea><br>
-        </fieldset>
-        <button type="button" disabled>Înregistrează</button>
-        
-        <footer>
-            <p>&copy; 2026 Turnea David-Cătălin - Programare Web</p>
-        </footer>
-    </center>
-</body>
-
-</html>
+        <label for="desc">Descriere:</label><br>
+        <textarea name="desc" id="desc" rows="10" cols="30"></textarea><br>
+    </fieldset>
+    <button type="button" disabled>Înregistrează</button>
+</center>

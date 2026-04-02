@@ -1,117 +1,87 @@
-<!DOCTYPE html>
-<html lang="ro">
+<center>
+    <h1> "Cei 4 regi" ai boxului </h1>
 
-<head>
-    <title> Programare Web - Proiect 1 </title>
-    <link type="text/css" rel="stylesheet" href="css/stil.css">
-</head>
+    <h2> Descriere </h2>
 
-<body>
-        <nav class="navContainer">
-            <img src="imagini/The-Four-Kings.png" alt="The four kings logo" class="navLogo">
+    <p> <b>"The four kings"</b>
+        au fost o constelație de talente excepționale
+        — <i>Sugar Ray Leonard, Roberto Durán, Thomas Hearns și Marvin Hagler </i>—
+        care au definit boxul anilor '80 printr-o serie de rivalități legendare,
+        salvând popularitatea sportului după era lui Muhammad Ali.
+    </p>
 
-            <div class="navLinks">
-                <a class="navItem" href="index.html">Acasă</a>
-                <a class="navItem" href="video.html">Video</a>
-                <a class="navItem" href="inregistreaza.html" style="padding-top: 2px;">Înregistrează</a>
-                <a class="navItem" href="despre.html">Despre</a>
-                <a class="navItem" href="desen.html">Desen</a>
-                <a class="navItem" href="invat.html">Învăț</a>
-            </div>
-        </nav>
+    <p> <b> Cele mai importante meciuri: </b> </p>
 
-        <div class="logo"></div>
-    <center>
-        <h1> "Cei 4 regi" ai boxului </h1>
+    <table>
+        <tr>
+            <th>Data</th>
+            <th>Câștigător</th>
+            <th>Învins</th>
+            <th>Metoda</th>
+            <th>Evenimentul</th>
+        </tr>
+        <tr>
+            <th>20 Iunie 1980</th>
+            <th>Roberto Durán</th>
+            <th>Sugar Ray Leonard</th>
+            <th>Decizie</th>
+            <th>The Brawl in Montreal</th>
+        </tr>
+        <tr>
+            <th>25 Noiembrie 1980</th>
+            <th>Sugar Ray Leonard</th>
+            <th>Roberto Durán</th>
+            <th>TKO (Runda 8)</th>
+            <th>"No Mas" Fight</th>
+        </tr>
+        <tr>
+            <th>16 Septembrie 1981</th>
+            <th>Sugar Ray Leonard</th>
+            <th>Thomas Hearns</th>
+            <th>TKO (Runda 14)</th>
+            <th>The Showdown</th>
+        </tr>
+        <tr>
+            <th>15 Aprilie 1985</th>
+            <th>Marvin Hagler</th>
+            <th>Thomas Hearns</th>
+            <th>KO (Runda 3)</th>
+            <th>The War</th>
+        </tr>
+    </table>
 
-        <h2> Descriere </h2>
+    <p> Caută luptători: </p>
 
-        <p> <b>"The four kings"</b>
-            au fost o constelație de talente excepționale
-            — <i>Sugar Ray Leonard, Roberto Durán, Thomas Hearns și Marvin Hagler </i>—
-            care au definit boxul anilor '80 printr-o serie de rivalități legendare,
-            salvând popularitatea sportului după era lui Muhammad Ali.
-        </p>
+    <form>
+        <label for="lname">Nume:</label><br>
+        <input type="text" id="lname" name="lname"><br>
 
-        <p> <b> Cele mai importante meciuri: </b> </p>
+        <label for="fname">Prenume:</label><br>
+        <input type="text" id="fname" name="fname"><br>
 
-        <table>
-            <tr>
-                <th>Data</th>
-                <th>Câștigător</th>
-                <th>Învins</th>
-                <th>Metoda</th>
-                <th>Evenimentul</th>
-            </tr>
-            <tr>
-                <th>20 Iunie 1980</th>
-                <th>Roberto Durán</th>
-                <th>Sugar Ray Leonard</th>
-                <th>Decizie</th>
-                <th>The Brawl in Montreal</th>
-            </tr>
-            <tr>
-                <th>25 Noiembrie 1980</th>
-                <th>Sugar Ray Leonard</th>
-                <th>Roberto Durán</th>
-                <th>TKO (Runda 8)</th>
-                <th>"No Mas" Fight</th>
-            </tr>
-            <tr>
-                <th>16 Septembrie 1981</th>
-                <th>Sugar Ray Leonard</th>
-                <th>Thomas Hearns</th>
-                <th>TKO (Runda 14)</th>
-                <th>The Showdown</th>
-            </tr>
-            <tr>
-                <th>15 Aprilie 1985</th>
-                <th>Marvin Hagler</th>
-                <th>Thomas Hearns</th>
-                <th>KO (Runda 3)</th>
-                <th>The War</th>
-            </tr>
-        </table>
+        <label for="date">Data:</label> <br>
+        <select name="date" id="date">
+            <option value="20 Iunie 1980">20 Iunie 1980</option>
+            <option value="25 Noiembrie 1980">25 Noiembrie 1980</option>
+            <option value="16 Septembrie 1981">16 Septembrie 1981</option>
+            <option value="15 Aprilie 1985">15 Aprilie 1985</option>
+        </select><br>
 
-        <p> Caută luptători: </p>
+        <label for="pwd">Parolă:</label><br>
+        <input type="password" id="pwd" name="pwd"><br>
 
-        <form>
-            <label for="lname">Nume:</label><br>
-            <input type="text" id="lname" name="lname"><br>
+        <label for="extra">Extra:</label><br>
+        <textarea name="extra" id="extra" rows="10" cols="30"></textarea><br>
 
-            <label for="fname">Prenume:</label><br>
-            <input type="text" id="fname" name="fname"><br>
+        <label for="fname"> Sunt de acord cu termenii și condițiile</label>
+        <input type="checkbox" name=""><br>
 
-            <label for="date">Data:</label> <br>
-            <select name="date" id="date">
-                <option value="20 Iunie 1980">20 Iunie 1980</option>
-                <option value="25 Noiembrie 1980">25 Noiembrie 1980</option>
-                <option value="16 Septembrie 1981">16 Septembrie 1981</option>
-                <option value="15 Aprilie 1985">15 Aprilie 1985</option>
-            </select><br>
+        <input type="submit" value="Submit">
 
-            <label for="pwd">Parolă:</label><br>
-            <input type="password" id="pwd" name="pwd"><br>
+        <p>Bibliografie: <a href="https://www.w3schools.com/html/" target="_blank">W3Schools!</a></p>
 
-            <label for="extra">Extra:</label><br>
-            <textarea name="extra" id="extra" rows="10" cols="30"></textarea><br>
+        <p>Sursa principală de informații: </p>
 
-            <label for="fname"> Sunt de acord cu termenii și condițiile</label>
-            <input type="checkbox" name=""><br>
-
-            <input type="submit" value="Submit">
-
-            <p>Bibliografie: <a href="https://www.w3schools.com/html/" target="_blank">W3Schools!</a></p>
-
-            <p>Sursa principală de informații: </p>
-
-            <iframe src="https://en.wikipedia.org/wiki/Boxing_in_the_1980s" height="400" width="800"></iframe>
-        </form>
-
-        <footer>
-            <p>&copy; 2026 Turnea David-Cătălin - Programare Web</p>
-        </footer>
-    </center>
-</body>
-
-</html>
+        <iframe src="https://en.wikipedia.org/wiki/Boxing_in_the_1980s" height="400" width="800"></iframe>
+    </form>
+</center>

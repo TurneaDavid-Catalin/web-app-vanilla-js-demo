@@ -1,71 +1,39 @@
-<!DOCTYPE html>
-<html lang="ro">
+<center>
+    <svg width="400" height="500" background-color="#919090">
+        <defs>
+            <linearGradient id="gradientSac" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#1c1a1a" />
+                <stop offset="50%" stop-color="#4a4a52" />
+                <stop offset="100%" stop-color="#1c1a1a" />
+            </linearGradient>
+        </defs>
 
-<head>
-    <title> Proiect 1 - Desen </title>
-    <link type="text/css" rel="stylesheet" href="css/stil.css">
-</head>
+        <rect x="0" y="0" width="400" height="500" fill="#424040" />
 
-<body>
-    <center>
-        <nav class="navContainer">
-            <img src="imagini\The-Four-Kings.png" alt="The four kings logo" class="navLogo">
+        <rect x="0" y="385" width="400" height="125" fill="#919090" />
 
-            <div class="navLinks">
-                <a class="navItem" href="index.html">Acasă</a>
-                <a class="navItem" href="video.html">Video</a>
-                <a class="navItem" href="inregistreaza.html" style="padding-top: 2px;">Înregistrează</a>
-                <a class="navItem" href="despre.html">Despre</a>
-                <a class="navItem" href="desen.html">Desen</a>
-                <a class="navItem" href="invat.html">Învăț</a>
-            </div>
-        </nav>
+        <g cursor="pointer">
+            <animateTransform attributeName="transform" type="rotate"
+                values="0 200 50; 15 200 50; -8 200 50; 3 200 50; 0 200 50" dur="0.6s" begin="click"
+                restart="whenNotActive" />
 
-        <div class="logo"></div>
+            <circle cx="200" cy="50" r="12" fill="none" stroke="#ccc" stroke-width="5" />
 
+            <line x1="175" y1="120" x2="200" y2="50" stroke="#888" stroke-width="4" />
+            <line x1="225" y1="120" x2="200" y2="50" stroke="#888" stroke-width="4" />
 
-        <svg width="400" height="500" background-color="#919090">
-            <defs>
-                <linearGradient id="gradientSac" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#1c1a1a" />
-                    <stop offset="50%" stop-color="#4a4a52" />
-                    <stop offset="100%" stop-color="#1c1a1a" />
-                </linearGradient>
-            </defs>
+            <rect x="150" y="120" width="100" height="240" fill="url(#gradientSac)" />
 
-            <rect x="0" y="0" width="400" height="500" fill="#424040" />
+            <ellipse cx="200" cy="120" rx="50" ry="15" fill="#383231" />
 
-            <rect x="0" y="385" width="400" height="125" fill="#919090" />
+            <ellipse cx="200" cy="360" rx="50" ry="15" fill="#0a0a0a" />
 
-            <g cursor="pointer">
-                <animateTransform attributeName="transform" type="rotate"
-                    values="0 200 50; 15 200 50; -8 200 50; 3 200 50; 0 200 50" dur="0.6s" begin="click"
-                    restart="whenNotActive" />
+            <ellipse cx="200" cy="240" rx="40" ry="20" fill="#3996cc" stroke="#ccc" stroke-width="3" />
 
-                <circle cx="200" cy="50" r="12" fill="none" stroke="#ccc" stroke-width="5" />
-
-                <line x1="175" y1="120" x2="200" y2="50" stroke="#888" stroke-width="4" />
-                <line x1="225" y1="120" x2="200" y2="50" stroke="#888" stroke-width="4" />
-
-                <rect x="150" y="120" width="100" height="240" fill="url(#gradientSac)" />
-
-                <ellipse cx="200" cy="120" rx="50" ry="15" fill="#383231" />
-
-                <ellipse cx="200" cy="360" rx="50" ry="15" fill="#0a0a0a" />
-
-                <ellipse cx="200" cy="240" rx="40" ry="20" fill="#3996cc" stroke="#ccc" stroke-width="3" />
-
-                <text x="200" y="247" font-family="'Arial Black', sans-serif" font-size="22" fill="#ffffff"
-                    font-weight="bold" text-anchor="middle" letter-spacing="1px">
-                    K.O.
-                </text>
-            </g>
-        </svg>
-        
-        <footer>
-            <p>&copy; 2026 Turnea David-Cătălin - Programare Web</p>
-        </footer>
-    </center>
-</body>
-
-</html>
+            <text x="200" y="247" font-family="'Arial Black', sans-serif" font-size="22" fill="#ffffff"
+                font-weight="bold" text-anchor="middle" letter-spacing="1px">
+                K.O.
+            </text>
+        </g>
+    </svg>
+</center>
