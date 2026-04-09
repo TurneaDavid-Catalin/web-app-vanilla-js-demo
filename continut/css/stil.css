@@ -166,6 +166,10 @@ h1::first-letter {
     font-size: 150%
 }
 
+::placeholder {
+    color: gray;
+}
+
 table,
 td,
 th {
