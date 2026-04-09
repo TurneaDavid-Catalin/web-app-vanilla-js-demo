@@ -1,16 +1,28 @@
 <center>
     <label for="produse">Alegeți produsul:</label>
     <select name="produse" id="produse">
-        <option value="manusiDeBox">Mănuși de box</option>
-        <option value="sacDeBox">Sac de box</option>
-        <option value="proteza">Proteză</option>
-        <option value="bandaje">Bandaje</option>
-        <option value="casca">Cască</option>
+        <option value="Mănuși de box">Mănuși de box</option>
+        <option value="Sac de box">Sac de box</option>
+        <option value="Proteză">Proteză</option>
+        <option value="Bandaje">Bandaje</option>
+        <option value="Cască">Cască</option>
     </select>
 
     <label for="cantitate">Alegeți cantitatea:</label>
     <input type="number" name="cantitate" id="cantitate" min="1" max="99">
     
     <input type="button" name="adauga" id="adauga" value="Adaugă" onclick="addProduct()">
-    <input type="button" id="test" value="Test" onclick="test()">
+
+    <hr> <h3>Lista de Cumpărături</h3>
+    <table id="tabel-produse">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nume Produs</th>
+                <th>Cantitate</th>
+            </tr>
+        </thead>
+        <tbody id="corp-tabel">
+            </tbody>
+    </table>
 </center>

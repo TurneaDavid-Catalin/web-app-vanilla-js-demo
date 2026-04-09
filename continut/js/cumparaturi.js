@@ -1,7 +1,7 @@
 class Produs {
     constructor(name, quantity, id) {
         this.name = name;
-        this.quantity = quantity;
+        this.quantity = parseInt(quantity);
         this.id = id;
     }
 
@@ -14,49 +14,55 @@ class Produs {
     }
 }
 
-const manusi = new Produs("manusiDeBox", 0, 1);
-const sac = new Produs("sacDeBox", 0, 2);
-const proteza = new Produs("proteza", 0, 3);
-const bandaje = new Produs("bandaje", 0, 4);
-const casca = new Produs("casca", 0, 5);
+let shoppingList = [];
 
-function printAll() {
-    manusi.print();
-    sac.print();
-    proteza.print();
-    bandaje.print();
-    casca.print();
-}
+const myWorker = new Worker('js/worker.js');
 
-function addProduct() {
-    let productName = document.getElementById("produse").value;
-    let productQuantity = document.getElementById("cantitate").value;
+myWorker.onmessage = (e) => {
+    const produsPrimit = e.data;
+    console.log("Confirmare pentru: " + produsPrimit.name);
 
-    localStorage.setItem(productName, productQuantity);
+    renderTable();
+};
 
-    switch(productName) {
-        case "manusiDeBox":
-            manusi.increaseQuantity(productQuantity);
-            break;
-        case "sacDeBox":
-            sac.increaseQuantity(productQuantity);
-            break;
-        case "proteza":
-            proteza.increaseQuantity(productQuantity);
-            break;
-        case "bandaje":
-            bandaje.increaseQuantity(productQuantity);
-            break;
-        case "casca":
-            casca.increaseQuantity(productQuantity);
-            break;
-        default:
-            break;
+const addProduct = () => {
+    const name = document.getElementById("produse").value;
+    const quantity = parseInt(document.getElementById("cantitate").value);
+
+    let existentProduct = shoppingList.find(p => p.name === name);
+
+    let currentProduct;
+
+    if (existentProduct) {
+        existentProduct.increaseQuantity(quantity);
+        currentProduct = existentProduct;
     }
+    else {
+        const id = shoppingList.length + 1;
+        currentProduct = new Produs(name, quantity, id);
+        shoppingList.push(currentProduct);
+    }
+
+    localStorage.setItem(`produs_${currentProduct.id}`, JSON.stringify(currentProduct));
+
+    new Promise((resolve) => {
+        myWorker.postMessage(currentProduct);
+        resolve();
+    }).then(() => console.log("Mesaj trimis catre worker prin Promise"));
 }
 
-function test() {
-    let productName = document.getElementById("produse").value;
+const renderTable = () => {
+    const tbody = document.getElementById("corp-tabel");
 
-    console.log(localStorage.getItem(productName));
-}
+    tbody.innerHTML = "";
+
+    shoppingList.forEach(p => {
+        const row = `<tr>
+            <td>${p.id}</td>
+            <td>${p.name}</td>
+            <td>${p.quantity}</td>
+        </tr>`;
+
+        tbody.innerHTML += row;
+    });
+};
