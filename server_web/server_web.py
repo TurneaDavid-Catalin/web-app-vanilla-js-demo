@@ -1,5 +1,8 @@
 import socket
 import os
+import threading
+import gzip
+from io import BytesIO
 from urllib.parse import unquote
 # creeaza un server socket
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -54,6 +57,117 @@ def _http_response(status_line: str, headers: dict[str, str], body: bytes) -> by
     return head + body
 
 
+def _gzip_bytes(data: bytes) -> bytes:
+    buf = BytesIO()
+    with gzip.GzipFile(fileobj=buf, mode='wb') as gz:
+        gz.write(data)
+    return buf.getvalue()
+
+
+def _read_http_request(clientsocket: socket.socket) -> tuple[str, dict[str, str]]:
+    # Citim pana la sfarsitul headerelor: \r\n\r\n
+    raw = b''
+    while b'\r\n\r\n' not in raw:
+        chunk = clientsocket.recv(1024)
+        if not chunk:
+            break
+        raw += chunk
+
+    # Header-ele HTTP sunt definite ca ISO-8859-1 pentru mapping 1:1 bytes->chars.
+    text = raw.decode('iso-8859-1', errors='replace')
+    header_part = text.split('\r\n\r\n', 1)[0]
+    lines = header_part.split('\r\n')
+    start_line = lines[0] if lines else ''
+    headers: dict[str, str] = {}
+    for line in lines[1:]:
+        if not line or ':' not in line:
+            continue
+        k, v = line.split(':', 1)
+        headers[k.strip().lower()] = v.strip()
+    return start_line, headers
+
+
+def _handle_client(clientsocket: socket.socket, address):
+    try:
+        print('S-a conectat un client.')
+
+        linieDeStart, req_headers = _read_http_request(clientsocket)
+        print('S-a citit linia de start din cerere: ##### ' + linieDeStart + '#####')
+
+        parts = linieDeStart.split()
+        method = parts[0] if len(parts) > 0 else ''
+        resursaCeruta = parts[1] if len(parts) > 1 else '/'
+
+        accept_encoding = req_headers.get('accept-encoding', '')
+        client_accepts_gzip = 'gzip' in accept_encoding.lower()
+
+        if method.upper() != 'GET':
+            body = 'Method Not Allowed'.encode('utf-8')
+            headers = {
+                'Content-Type': 'text/plain; charset=utf-8',
+                'Server': 'server',
+            }
+            if client_accepts_gzip:
+                body = _gzip_bytes(body)
+                headers['Content-Encoding'] = 'gzip'
+            headers['Content-Length'] = str(len(body))
+            response = _http_response('HTTP/1.1 405 Method Not Allowed', headers, body)
+            clientsocket.sendall(response)
+            return
+
+        file_path = _safe_join(BASE_DIR, resursaCeruta)
+        if file_path is None or not os.path.exists(file_path) or not os.path.isfile(file_path):
+            body = b'<html><body><h1>404 Not Found</h1></body></html>'
+            headers = {
+                'Content-Type': 'text/html; charset=utf-8',
+                'Server': 'server',
+            }
+            if client_accepts_gzip:
+                body = _gzip_bytes(body)
+                headers['Content-Encoding'] = 'gzip'
+            headers['Content-Length'] = str(len(body))
+            response = _http_response('HTTP/1.1 404 Not Found', headers, body)
+            clientsocket.sendall(response)
+            return
+
+        with open(file_path, 'rb') as f:
+            body = f.read()
+
+        headers = {
+            'Content-Type': _content_type_for(file_path),
+            'Server': 'server',
+        }
+
+        if client_accepts_gzip:
+            body = _gzip_bytes(body)
+            headers['Content-Encoding'] = 'gzip'
+
+        headers['Content-Length'] = str(len(body))
+        response = _http_response('HTTP/1.1 200 OK', headers, body)
+        clientsocket.sendall(response)
+    except Exception as e:
+        body = f'Internal Server Error\n{e}'.encode('utf-8')
+        headers = {
+            'Content-Type': 'text/plain; charset=utf-8',
+            'Server': 'server',
+        }
+        # gzip optional si aici (daca apare eroare dupa ce am citit headerul)
+        try:
+            if 'req_headers' in locals():
+                accept_encoding = req_headers.get('accept-encoding', '')
+                if 'gzip' in accept_encoding.lower():
+                    body = _gzip_bytes(body)
+                    headers['Content-Encoding'] = 'gzip'
+        except Exception:
+            pass
+        headers['Content-Length'] = str(len(body))
+        response = _http_response('HTTP/1.1 500 Internal Server Error', headers, body)
+        clientsocket.sendall(response)
+    finally:
+        clientsocket.close()
+        print('S-a terminat comunicarea cu clientul.')
+
+
 while True:
     print('#########################################################################')
     print('Serverul asculta potentiali clienti.')
@@ -61,76 +175,4 @@ while True:
     # metoda `accept` este blocanta => clientsocket, care reprezinta socket-ul
     # corespunzator clientului conectat
     (clientsocket, address) = serversocket.accept()
-    print('S-a conectat un client.')
-    # se proceseaza cererea si se citeste prima linie de text
-    cerere = ''
-    linieDeStart = ''
-    while True:
-        data = clientsocket.recv(1024)
-        cerere = cerere + data.decode()
-        print('S-a citit mesajul: \n---------------------------\n' + cerere + '\n---------------------------')
-        pozitie = cerere.find('\r\n')
-        if (pozitie > -1):
-            linieDeStart = cerere[0:pozitie]
-            print('S-a citit linia de start din cerere: ##### ' + linieDeStart + '#####')
-            break
-    print('S-a terminat cititrea.')
-    try:
-        parts = linieDeStart.split()
-        method = parts[0] if len(parts) > 0 else ''
-        resursaCeruta = parts[1] if len(parts) > 1 else '/'
-
-        if method.upper() != 'GET':
-            body = b'Method Not Allowed'
-            response = _http_response(
-                'HTTP/1.1 405 Method Not Allowed',
-                {
-                    'Content-Length': str(len(body)),
-                    'Content-Type': 'text/plain; charset=utf-8',
-                    'Server': 'server',
-                },
-                body,
-            )
-            clientsocket.sendall(response)
-        else:
-            file_path = _safe_join(BASE_DIR, resursaCeruta)
-            if file_path is None or not os.path.exists(file_path) or not os.path.isfile(file_path):
-                body = b'<html><body><h1>404 Not Found</h1></body></html>'
-                response = _http_response(
-                    'HTTP/1.1 404 Not Found',
-                    {
-                        'Content-Length': str(len(body)),
-                        'Content-Type': 'text/html; charset=utf-8',
-                        'Server': 'server',
-                    },
-                    body,
-                )
-                clientsocket.sendall(response)
-            else:
-                with open(file_path, 'rb') as f:
-                    body = f.read()
-                response = _http_response(
-                    'HTTP/1.1 200 OK',
-                    {
-                        'Content-Length': str(len(body)),
-                        'Content-Type': _content_type_for(file_path),
-                        'Server': 'server',
-                    },
-                    body,
-                )
-                clientsocket.sendall(response)
-    except Exception as e:
-        body = f'Internal Server Error\n{e}'.encode('utf-8')
-        response = _http_response(
-            'HTTP/1.1 500 Internal Server Error',
-            {
-                'Content-Length': str(len(body)),
-                'Content-Type': 'text/plain; charset=utf-8',
-                'Server': 'server',
-            },
-            body,
-        )
-        clientsocket.sendall(response)
-
-    clientsocket.close()
-    print('S-a terminat comunicarea cu clientul.')
+    threading.Thread(target=_handle_client, args=(clientsocket, address), daemon=True).start()
