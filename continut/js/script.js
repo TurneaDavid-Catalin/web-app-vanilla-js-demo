@@ -169,3 +169,53 @@ function insertCol() {
         }
     }
 }
+
+function verificaUtilizator() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const output = document.getElementById("checkID");
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            if (this.status !== 200) {
+                output.innerText = "Eroare la citirea utilizatorilor.";
+                return;
+            }
+            try {
+                const utilizatori = JSON.parse(this.responseText);
+                const gasit = utilizatori.find(u => u.utilizator === username);
+                if (gasit && gasit.parola === password) {
+                    output.innerText = "Utilizator și parolă corecte.";
+                } else {
+                    output.innerText = "Utilizator sau parolă incorecte.";
+                }
+            } catch (e) {
+                output.innerText = "Eroare la parsarea JSON.";
+            }
+        }
+    };
+    xhttp.open("GET", "resurse/utilizatori.json", true);
+    xhttp.send();
+}
+
+function inregistreazaUtilizator() {
+    const utilizator = document.getElementById("uname").value;
+    const parola = document.getElementById("pass").value;
+    const out = document.getElementById("registerResult");
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                out.innerText = "Înregistrare reușită.";
+            } else {
+                out.innerText = "Eroare la înregistrare.";
+            }
+        }
+    };
+
+    xhttp.open("POST", "/api/utilizatori", true);
+    xhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+    xhttp.send(JSON.stringify({ utilizator, parola }));
+}

@@ -5,6 +5,9 @@
         <label for="uname">Nume utilizator:</label>
         <input type="text" id="uname" name="uname"> <br>
 
+        <label for="pass">Parolă:</label>
+        <input type="password" id="pass" name="pass"> <br>
+
         <label for="lname">Nume:</label>
         <input type="text" id="lname" name="lname"> <br>
 
@@ -49,5 +52,6 @@
         <label for="desc">Descriere:</label><br>
         <textarea name="desc" id="desc" rows="10" cols="30"></textarea><br>
     </fieldset>
-    <button type="button" disabled>Înregistrează</button>
+    <p id="registerResult"></p>
+    <button type="button" onclick="inregistreazaUtilizator()">Înregistrează</button>
 </center>

@@ -3,7 +3,8 @@ import os
 import threading
 import gzip
 from io import BytesIO
-from urllib.parse import unquote
+import json
+from urllib.parse import unquote, parse_qs
 # creeaza un server socket
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # specifica ca serverul va rula pe portul 5678, accesibil de pe orice ip al
@@ -64,7 +65,7 @@ def _gzip_bytes(data: bytes) -> bytes:
     return buf.getvalue()
 
 
-def _read_http_request(clientsocket: socket.socket) -> tuple[str, dict[str, str]]:
+def _read_http_request(clientsocket: socket.socket) -> tuple[str, dict[str, str], bytes]:
     # Citim pana la sfarsitul headerelor: \r\n\r\n
     raw = b''
     while b'\r\n\r\n' not in raw:
@@ -73,10 +74,9 @@ def _read_http_request(clientsocket: socket.socket) -> tuple[str, dict[str, str]
             break
         raw += chunk
 
-    # Header-ele HTTP sunt definite ca ISO-8859-1 pentru mapping 1:1 bytes->chars.
-    text = raw.decode('iso-8859-1', errors='replace')
-    header_part = text.split('\r\n\r\n', 1)[0]
-    lines = header_part.split('\r\n')
+    head_bytes, sep, rest = raw.partition(b'\r\n\r\n')
+    text = head_bytes.decode('iso-8859-1', errors='replace')
+    lines = text.split('\r\n')
     start_line = lines[0] if lines else ''
     headers: dict[str, str] = {}
     for line in lines[1:]:
@@ -84,22 +84,122 @@ def _read_http_request(clientsocket: socket.socket) -> tuple[str, dict[str, str]
             continue
         k, v = line.split(':', 1)
         headers[k.strip().lower()] = v.strip()
-    return start_line, headers
+
+    content_length = 0
+    try:
+        content_length = int(headers.get('content-length', '0'))
+    except Exception:
+        content_length = 0
+
+    body = rest
+    while len(body) < content_length:
+        chunk = clientsocket.recv(1024)
+        if not chunk:
+            break
+        body += chunk
+    if content_length >= 0:
+        body = body[:content_length]
+
+    return start_line, headers, body
+
+
+def _json_response(status_line: str, obj, client_accepts_gzip: bool) -> bytes:
+    body = json.dumps(obj, ensure_ascii=False).encode('utf-8')
+    headers = {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Server': 'server',
+    }
+    if client_accepts_gzip:
+        body = _gzip_bytes(body)
+        headers['Content-Encoding'] = 'gzip'
+    headers['Content-Length'] = str(len(body))
+    return _http_response(status_line, headers, body)
 
 
 def _handle_client(clientsocket: socket.socket, address):
     try:
         print('S-a conectat un client.')
 
-        linieDeStart, req_headers = _read_http_request(clientsocket)
+        linieDeStart, req_headers, req_body = _read_http_request(clientsocket)
         print('S-a citit linia de start din cerere: ##### ' + linieDeStart + '#####')
 
         parts = linieDeStart.split()
         method = parts[0] if len(parts) > 0 else ''
         resursaCeruta = parts[1] if len(parts) > 1 else '/'
+        # normalizare pentru rutare (fara query/fragment, fara trailing slash)
+        ruta = resursaCeruta.split('?', 1)[0].split('#', 1)[0]
+        if ruta != '/' and ruta.endswith('/'):
+            ruta = ruta.rstrip('/')
 
         accept_encoding = req_headers.get('accept-encoding', '')
         client_accepts_gzip = 'gzip' in accept_encoding.lower()
+
+        # Ruta speciala: /api/utilizatori (nu exista fisier, e procesare)
+        if ruta == '/api/utilizatori' and method.upper() == 'OPTIONS':
+            # raspuns minimal pentru preflight / testare
+            body = b''
+            headers = {
+                'Content-Length': '0',
+                'Server': 'server',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type',
+            }
+            clientsocket.sendall(_http_response('HTTP/1.1 204 No Content', headers, body))
+            return
+
+        if ruta == '/api/utilizatori' and method.upper() == 'POST':
+            content_type = req_headers.get('content-type', '').lower()
+            payload = None
+            try:
+                if 'application/json' in content_type:
+                    payload = json.loads(req_body.decode('utf-8', errors='replace'))
+                elif 'application/x-www-form-urlencoded' in content_type:
+                    form = parse_qs(req_body.decode('utf-8', errors='replace'), keep_blank_values=True)
+                    payload = {
+                        'utilizator': (form.get('utilizator') or form.get('uname') or [''])[0],
+                        'parola': (form.get('parola') or form.get('pass') or [''])[0],
+                    }
+                else:
+                    # fallback: incercam JSON
+                    payload = json.loads(req_body.decode('utf-8', errors='replace'))
+            except Exception:
+                payload = None
+
+            if not payload or not payload.get('utilizator') or not payload.get('parola'):
+                clientsocket.sendall(_json_response('HTTP/1.1 400 Bad Request', {'ok': False, 'error': 'Date invalide'}, client_accepts_gzip))
+                return
+
+            utilizator = str(payload['utilizator'])
+            parola = str(payload['parola'])
+
+            users_path = os.path.join(BASE_DIR, 'resurse', 'utilizatori.json')
+            try:
+                if os.path.exists(users_path):
+                    with open(users_path, 'rb') as f:
+                        existing = json.loads(f.read().decode('utf-8', errors='replace') or '[]')
+                else:
+                    existing = []
+            except Exception:
+                existing = []
+
+            if not isinstance(existing, list):
+                existing = []
+
+            updated = False
+            for u in existing:
+                if isinstance(u, dict) and u.get('utilizator') == utilizator:
+                    u['parola'] = parola
+                    updated = True
+                    break
+            if not updated:
+                existing.append({'utilizator': utilizator, 'parola': parola})
+
+            with open(users_path, 'wb') as f:
+                f.write(json.dumps(existing, ensure_ascii=False, indent=2).encode('utf-8'))
+
+            clientsocket.sendall(_json_response('HTTP/1.1 200 OK', {'ok': True, 'updated': updated}, client_accepts_gzip))
+            return
 
         if method.upper() != 'GET':
             body = 'Method Not Allowed'.encode('utf-8')
@@ -115,7 +215,7 @@ def _handle_client(clientsocket: socket.socket, address):
             clientsocket.sendall(response)
             return
 
-        file_path = _safe_join(BASE_DIR, resursaCeruta)
+        file_path = _safe_join(BASE_DIR, ruta)
         if file_path is None or not os.path.exists(file_path) or not os.path.isfile(file_path):
             body = b'<html><body><h1>404 Not Found</h1></body></html>'
             headers = {
