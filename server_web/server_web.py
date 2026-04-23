@@ -5,12 +5,8 @@ import gzip
 from io import BytesIO
 import json
 from urllib.parse import unquote, parse_qs
-# creeaza un server socket
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# specifica ca serverul va rula pe portul 5678, accesibil de pe orice ip al
-# serverului
 serversocket.bind(('', 5678))
-# serverul poate accepta conexiuni; specifica cati clienti pot astepta la coada
 serversocket.listen(5) 
 
 CONTENT_TYPES = {
@@ -28,17 +24,14 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'contin
 
 
 def _safe_join(base_dir: str, url_path: str) -> str | None:
-    # Elimina query string si decodeaza %xx
     path_only = url_path.split('?', 1)[0].split('#', 1)[0]
     path_only = unquote(path_only)
 
     if path_only in ('', '/'):
         path_only = '/index.html'
     elif not os.path.splitext(path_only)[1]:
-        # pentru rute de forma /despre => despre.html (compatibil cu cerintele anterioare)
         path_only = f'{path_only}.html'
 
-    # normalizeaza si previne path traversal (../)
     candidate = os.path.abspath(os.path.join(base_dir, path_only.lstrip('/')))
     if os.path.commonpath([base_dir, candidate]) != base_dir:
         return None
@@ -66,7 +59,6 @@ def _gzip_bytes(data: bytes) -> bytes:
 
 
 def _read_http_request(clientsocket: socket.socket) -> tuple[str, dict[str, str], bytes]:
-    # Citim pana la sfarsitul headerelor: \r\n\r\n
     raw = b''
     while b'\r\n\r\n' not in raw:
         chunk = clientsocket.recv(1024)
@@ -126,7 +118,6 @@ def _handle_client(clientsocket: socket.socket, address):
         parts = linieDeStart.split()
         method = parts[0] if len(parts) > 0 else ''
         resursaCeruta = parts[1] if len(parts) > 1 else '/'
-        # normalizare pentru rutare (fara query/fragment, fara trailing slash)
         ruta = resursaCeruta.split('?', 1)[0].split('#', 1)[0]
         if ruta != '/' and ruta.endswith('/'):
             ruta = ruta.rstrip('/')
@@ -134,9 +125,7 @@ def _handle_client(clientsocket: socket.socket, address):
         accept_encoding = req_headers.get('accept-encoding', '')
         client_accepts_gzip = 'gzip' in accept_encoding.lower()
 
-        # Ruta speciala: /api/utilizatori (nu exista fisier, e procesare)
         if ruta == '/api/utilizatori' and method.upper() == 'OPTIONS':
-            # raspuns minimal pentru preflight / testare
             body = b''
             headers = {
                 'Content-Length': '0',
@@ -161,7 +150,6 @@ def _handle_client(clientsocket: socket.socket, address):
                         'parola': (form.get('parola') or form.get('pass') or [''])[0],
                     }
                 else:
-                    # fallback: incercam JSON
                     payload = json.loads(req_body.decode('utf-8', errors='replace'))
             except Exception:
                 payload = None
@@ -251,7 +239,6 @@ def _handle_client(clientsocket: socket.socket, address):
             'Content-Type': 'text/plain; charset=utf-8',
             'Server': 'server',
         }
-        # gzip optional si aici (daca apare eroare dupa ce am citit headerul)
         try:
             if 'req_headers' in locals():
                 accept_encoding = req_headers.get('accept-encoding', '')
@@ -271,8 +258,5 @@ def _handle_client(clientsocket: socket.socket, address):
 while True:
     print('#########################################################################')
     print('Serverul asculta potentiali clienti.')
-    # asteapta conectarea unui client la server
-    # metoda `accept` este blocanta => clientsocket, care reprezinta socket-ul
-    # corespunzator clientului conectat
     (clientsocket, address) = serversocket.accept()
     threading.Thread(target=_handle_client, args=(clientsocket, address), daemon=True).start()

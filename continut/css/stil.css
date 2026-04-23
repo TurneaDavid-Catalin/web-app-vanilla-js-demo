@@ -1,5 +1,4 @@
 .navContainer {
-    /*container la meniuu de navigare*/
     display: flex;
     background-color: red;
     flex-direction: column;
@@ -8,21 +7,18 @@
 }
 
 .navLogo {
-    /*imaginea de la meniu*/
     width: 300px;
     height: auto;
     margin-bottom: 20px;
 }
 
 .navLinks {
-    /*alt container pentru linkurile propriu-zise*/
     display: flex;
     justify-content: space-evenly;
     width: 100%;
 }
 
 .navItem {
-    /*linkurile din meniu cu padding pentru hover*/
     font-size: 150%;
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
@@ -35,14 +31,12 @@
 }
 
 .navItem:hover {
-    /*la hover se face un soi de casuta in juru linkului*/
     font-size: 250%;
     border-radius: 10px;
     background-color: rgb(173, 19, 19);
 }
 
 .homeContainer {
-    /*container pentru informatiile din home*/
     padding: 50px;
     display: flex;
     flex-wrap: wrap;
@@ -52,7 +46,6 @@
 }
 
 .homeItem {
-    /*clasa cu header 2 si paragraf*/
     background: linear-gradient(145deg, #2c2c2c, #000000);
     
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5), 
@@ -64,13 +57,11 @@
     border-radius: 8px;
     color: white;
     
-    /*trecere mai lina la hover*/
     transition: transform 0.4s ease, box-shadow 0.4s ease;
     cursor: pointer;
 }
 
 .homeItem:hover {
-    /*se mareste se inclina si umbra se face rosie*/
     transform: scale(1.05) rotate(1deg); 
     box-shadow: 0px 0px 25px rgba(226, 31, 38, 0.6); 
 }
@@ -157,7 +148,6 @@
 }
 
 body {
-    /*am pus astea ca bara de navigare sa ocupe tot spatiu*/
     margin: 0;
     padding: 0;
 }

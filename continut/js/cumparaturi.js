@@ -66,7 +66,6 @@ class LocalStorageShoppingStorage extends ShoppingStorage {
 
                 items.push({ id, name, quantity });
             } catch (_) {
-                // ignore corrupt entries
             }
         }
         items.sort((a, b) => (a.id ?? 0) - (b.id ?? 0));
@@ -175,7 +174,6 @@ const _syncModeUI = () => {
 const _reloadFromStorage = async () => {
     if (!storageProvider) storageProvider = _createProvider(storageMode);
     const raw = await storageProvider.loadAll();
-    // reconstruim instante Produs (optional, dar mentinem metoda increaseQuantity)
     shoppingList = raw
         .map((p) => {
             if (!p) return null;
