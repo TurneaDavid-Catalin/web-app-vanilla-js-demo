@@ -3,6 +3,8 @@ function incarcaPersoane() {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             parseazaXML(this);
+        } else if (this.readyState == 4) {
+            afiseazaEroareIncarcare("Nu pot încărca persoanele (status " + this.status + ").");
         }
     };
     xhttp.open("GET", "resurse/persoane.xml", true);
@@ -11,6 +13,17 @@ function incarcaPersoane() {
 
 function parseazaXML(xml) {
     var xmlDoc = xml.responseXML;
+    if (!xmlDoc) {
+        try {
+            xmlDoc = new DOMParser().parseFromString(xml.responseText, "application/xml");
+        } catch (e) {
+            xmlDoc = null;
+        }
+    }
+    if (!xmlDoc || !xmlDoc.getElementsByTagName) {
+        afiseazaEroareIncarcare("Răspuns XML invalid sau blocat de browser (ex. file://). Rulează proiectul printr-un server local.");
+        return;
+    }
     
     var table = "<table border='1' style='border-collapse: collapse; width: 100%; text-align: left;'>\n";
     table += "<tr><th>Nume</th><th>Prenume</th><th>Vârstă</th><th>Stradă</th><th>Număr</th><th>Localitate</th><th>Județ</th><th>Țară</th><th>Nivel Educație</th><th>Domeniu</th><th>Instituție</th><th>An</th><th>Ocupație</th></tr>\n";
@@ -44,4 +57,14 @@ function parseazaXML(xml) {
     document.getElementById("loading").style.display = 'none';
 
     document.getElementById("tabelContainer").innerHTML = table;
+}
+
+function afiseazaEroareIncarcare(mesaj) {
+    var loadingEl = document.getElementById("loading");
+    if (loadingEl) {
+        loadingEl.textContent = mesaj;
+        loadingEl.style.display = 'block';
+    }
+    var container = document.getElementById("tabelContainer");
+    if (container) container.innerHTML = "";
 }
