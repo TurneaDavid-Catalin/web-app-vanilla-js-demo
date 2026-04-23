@@ -1,4 +1,12 @@
 <center>
+    <div style="margin-bottom: 12px;">
+        <label for="storage-mode">Metodă de salvare:</label>
+        <select id="storage-mode" onchange="setStorageMode(this.value)">
+            <option value="localStorage">localStorage</option>
+            <option value="indexedDB">IndexedDB</option>
+        </select>
+    </div>
+
     <label for="produse">Alegeți produsul:</label>
     <select name="produse" id="produse">
         <option value="Mănuși de box">Mănuși de box</option>
